@@ -12,13 +12,16 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
-const drawerWidth = 400;
+import logo from '../logo.svg';
+
+const drawerWidth = 300;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,24 +32,22 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    zIndex: theme.zIndex.drawer + 1,
+    background: "#25165B"
   },
   appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginRight: drawerWidth,
   },
   title: {
     flexGrow: 1,
-  },
-  hide: {
-    display: 'none',
+    fontFamily: 'Karla, sans-serif',
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0,
+    flexShrink: 0
   },
   drawerPaper: {
     width: drawerWidth,
@@ -76,15 +77,19 @@ const useStyles = makeStyles((theme) => ({
     }),
     marginRight: 0,
   },
+  logo: {
+    width: "1.8em",
+    marginRight: "1em"
+  }
 }));
 
-export default function Tool() {
+export default function PersistentDrawerRight() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpen(!open);
   };
 
   const handleDrawerClose = () => {
@@ -101,15 +106,16 @@ export default function Tool() {
         })}
       >
         <Toolbar>
+          <img src={logo} alt="logo" className={classes.logo}/>
           <Typography variant="h6" noWrap className={classes.title}>
-            Concept QA Tool v2.0
+            Concept QA Tool
           </Typography>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="end"
             onClick={handleDrawerOpen}
-            className={clsx(open && classes.hide)}
+            className={open}
           >
             <MenuIcon />
           </IconButton>
@@ -121,18 +127,6 @@ export default function Tool() {
         })}
       >
         <div className={classes.drawerHeader} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
         <Typography paragraph>
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
           facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
@@ -154,23 +148,10 @@ export default function Tool() {
           paper: classes.drawerPaper,
         }}
       >
-        <div className={classes.drawerHeader}>
-          <IconButton onClick={handleDrawerClose}>
-            {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </div>
-        <Divider />
+        <div className={classes.drawerHeader} />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListSubheader>Creatives</ListSubheader>
+          {['120x600', '160x600', '300x250', '300x600'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />

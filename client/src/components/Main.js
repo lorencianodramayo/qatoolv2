@@ -10,6 +10,11 @@ import background from '../background.svg';
 import logo from '../logo.svg';
 
 const useStyles = makeStyles((theme) => ({
+  "@global": {
+    body: {
+      fontFamily: 'Karla, sans-serif',
+    }
+  },
   root: {
     height: '100vh',
   },
@@ -51,7 +56,7 @@ export default function Main() {
   return (
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={20} square>
         <div className={classes.paper}>
           <img src={logo} alt="logo" className={classes.logo} />
           <Typography component="h1" variant="h5" className={classes.title}>
