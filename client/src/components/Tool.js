@@ -107,7 +107,6 @@ export default function PersistentDrawerRight() {
             aria-label="open drawer"
             edge="end"
             onClick={handleDrawerOpen}
-            className={open}
           >
             <MenuIcon />
           </IconButton>
