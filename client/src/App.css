@@ -12,3 +12,13 @@
   background-color: #25175a !important;
   color: #fff !important;
 }
+
+.MuiDataGrid-root .MuiDataGrid-columnHeader:focus,
+.MuiDataGrid-root .MuiDataGrid-cell:focus {
+  outline: none !important;
+}
+
+.MuiTab-wrapper{
+  flex-direction: row !important;
+  justify-content: left !important;
+}

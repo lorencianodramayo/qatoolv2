@@ -11,12 +11,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Slide from "@material-ui/core/Slide";
 
-import Affix from '../global/Affix';
-import Iframe from '../global/Iframe';
 import CreativeList from './CreativeList';
+import CreativeTab from './CreativeTab';
 
 import logo from '../logo.svg';
-import board from '../board.svg';
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -83,13 +81,9 @@ const useStyles = makeStyles((theme) => ({
     width: "1.8em",
     marginRight: "1em",
   },
-  stage: {
-    height: "86vh",
-    background: `url(${board})`,
-  },
 }));
 
-export default function PersistentDrawerRight(props) {
+export default function Tool(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
 
@@ -129,10 +123,9 @@ export default function PersistentDrawerRight(props) {
         })}
       >
         <div className={classes.drawerHeader} />
-        <div className={classes.stage}><Iframe /></div>
+        <CreativeTab />
       </main>
       <CreativeList open={open}/>
-      <Affix />
     </div>
   );
 }

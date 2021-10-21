@@ -13,9 +13,7 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     transform: "translateZ(0px)",
     flexGrow: 1,
-    position: "fixed",
-    bottom: "1.5em",
-    right: "1.5em",
+    position: "relative",
   },
   speedDial: {
     position: "absolute",
