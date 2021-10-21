@@ -3,3 +3,12 @@
   width: 80px !important;
   height: 80px !important;
 }
+
+.MuiSpeedDial-fab{
+  background-color: #f50057 !important;
+}
+
+.MuiSpeedDialAction-fab{
+  background-color: #25175a !important;
+  color: #fff !important;
+}
