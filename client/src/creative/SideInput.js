@@ -5,9 +5,9 @@ import IconButton from "@material-ui/core/IconButton";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import FontDownloadIcon from '@material-ui/icons/FontDownload';
 import FormControl from "@material-ui/core/FormControl";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import FontDownloadOutlinedIcon from '@material-ui/icons/FontDownloadOutlined';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,7 +68,7 @@ export default function SideInput() {
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {values.options ? <Visibility /> : <VisibilityOff />}
+                  {values.options ? <FontDownloadIcon /> : <FontDownloadOutlinedIcon />}
                 </IconButton>
               </InputAdornment>
             }
