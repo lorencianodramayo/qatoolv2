@@ -5,6 +5,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 
 import SideInput from '../creative/SideInput';
+import SideSelect from '../creative/SideSelect';
 
 const drawerWidth = 350;
 
@@ -48,6 +49,7 @@ const DynamicElement = (props) => {
         <FormControl component="fieldset" className={classes.list}>
           <FormLabel component="legend">Dynamic Elements</FormLabel>
           <SideInput/>
+          <SideSelect />
         </FormControl>
       </Drawer>
     );
