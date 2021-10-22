@@ -1,0 +1,29 @@
+{
+  "name": "qatoolv2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/lorencianodramayo/qatoolv2.git",
+  "author": "<lorencianodramayo@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@google-cloud/storage": "^5.15.3",
+    "adm-zip": "^0.5.9",
+    "concurrently": "^6.3.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "nodemon": "^2.0.14"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "start": "node server/index.js",
+    "client": "cd client && npm start",
+    "server": "nodemon server/index.js",
+    "dev": "concurrently -n 'server,client' -c 'red,green'  \"npm run server\" \"npm run client\""
+  }
+}
