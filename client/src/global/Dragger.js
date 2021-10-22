@@ -7,13 +7,16 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    borderColor: "#f50057",
+    borderColor: "#d1d1d1",
     display: "flex",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center", 
+    borderWidth: "2px"
   },
   paragraph:{
-    display: 'none'
+    fontSize: "1em",
+    marginBottom: 0,
+    color: "#999999"
   }
 }));
 
@@ -35,7 +38,7 @@ const Dragger = () => {
         showPreviews={false}
         showPreviewsInDropzone={false}
         useChipsForPreview
-        dropzoneText={' '}
+        dropzoneText={'Drop multiple or single zip file.'}
         showAlerts={false}
         onChange={handleChange}
         maxFileSize={6291456}

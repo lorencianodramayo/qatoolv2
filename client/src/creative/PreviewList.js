@@ -38,7 +38,6 @@ export default function PreviewList() {
         rows={rows}
         columns={columns}
         rowsPerPageOptions={[5]}
-        checkboxSelection
         disableSelectionOnClick
       />
     </div>

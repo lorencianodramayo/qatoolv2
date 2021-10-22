@@ -6,24 +6,26 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
   },
+  listItem:{
+    padding: 0
+  }
 }));
 
 const options = [
-  "Show some love to Material-UI",
-  "Show all notification content",
-  "Hide sensitive notification content",
-  "Hide all notification content",
+  "160x600-Mui Template",
+  "300x600-Mui Template",
 ];
 
 export default function PreviewTitle() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
@@ -40,13 +42,14 @@ export default function PreviewTitle() {
 
   return (
     <div className={classes.root}>
-      <List component="nav" aria-label="Device settings">
+      <List component="nav" aria-label="Creative Name">
         <ListItem
           button
           aria-haspopup="true"
-          aria-controls="lock-menu"
-          aria-label="when device is locked"
+          aria-controls="creative-menu"
+          aria-label="creative list"
           onClick={handleClickListItem}
+          className={classes.listItem}
         >
           <ListItemText
             primary={options[selectedIndex]}
@@ -54,16 +57,19 @@ export default function PreviewTitle() {
         </ListItem>
       </List>
       <Menu
-        id="lock-menu"
+        id="creative-menu"
         anchorEl={anchorEl}
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        transformOrigin={{ vertical: "top", horizontal: "center" }}
         keepMounted
-        open={Boolean(anchorEl)}
+        open={options.length===1? false:Boolean(anchorEl)}
         onClose={handleClose}
+        TransitionComponent={Fade}
       >
         {options.map((option, index) => (
           <MenuItem
             key={option}
-            disabled={index === 0}
             selected={index === selectedIndex}
             onClick={(event) => handleMenuItemClick(event, index)}
           >

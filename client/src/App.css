@@ -1,11 +1,13 @@
 .MuiDropzoneArea-icon{
-  color: #f50057 !important;
+  color: #999999 !important;
   width: 80px !important;
   height: 80px !important;
 }
 
 .MuiSpeedDial-fab{
   background-color: #f50057 !important;
+  background-image: linear-gradient(
+    90deg,#e0238c,#f22076 47.43%,#f96666);    
 }
 
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline{
@@ -51,4 +53,9 @@
   -moz-text-fill-color: transparent;
   word-break: break-word;
   color: #000;
+}
+
+.MuiTab-wrapper{
+  font-family: Karla, sans-serif;
+
 }

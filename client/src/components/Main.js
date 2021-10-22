@@ -19,16 +19,11 @@ const useStyles = makeStyles((theme) => ({
     height: '100vh',
   },
   title: {
-    fontFamily: 'Karla, sans-serif',
+    color: "#29125f",
+    fontFamily: "Karla, sans-serif",
     fontWeight: 800,
-    backgroundImage: 'linear-gradient(90deg,#e0238c,#f22076 47.43%,#f96666)',
-    backgroundSize: '100%',
-    '-webkit-background-clip': 'text',
-    '-moz-background-clip': 'text',
-    '-webkit-text-fill-color': 'transparent',
-    '-moz-text-fill-color': 'transparent',
-    wordBreak: 'break-word',
-    color: '#000',
+    fontSize: "2rem",
+    marginBottom: "1em"
   },
   background: {
     backgroundImage: `url(${background})`,
@@ -37,16 +32,18 @@ const useStyles = makeStyles((theme) => ({
       theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
+    display: "flex",
+    justifyContent: "flex-end"
   },
   paper: {
-    margin: theme.spacing(4, 4),
+    margin: theme.spacing(20, 4),
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
   },
   logo: {
     margin: theme.spacing(1),
-    width: "5em"
+    width: "14em",
+    marginRight: "8em"
   },
 }));
 
@@ -58,7 +55,6 @@ export default function Main() {
       <CssBaseline />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={20} square>
         <div className={classes.paper}>
-          <img src={logo} alt="logo" className={classes.logo} />
           <Typography component="h1" variant="h5" className={classes.title}>
             Concept QA Tool
           </Typography>
@@ -66,7 +62,9 @@ export default function Main() {
           <Dragger />
         </div>
       </Grid>
-      <Grid item xs={false} sm={4} md={7} className={classes.background} />
+      <Grid item xs={false} sm={4} md={7} className={classes.background}>
+        <img src={logo} alt="logo" className={classes.logo} />
+      </Grid>
     </Grid>
   );
 }

@@ -23,6 +23,11 @@ const useStyles = makeStyles((theme) => ({
   stage: {
     minHeight: "77vh",
     background: `url(${board})`,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "1px solid #747163ab",
+    padding: "1em"
   },
   base: {
     borderBottom: "1px solid #e7e7e7",
