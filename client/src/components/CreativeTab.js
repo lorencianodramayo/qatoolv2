@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Affix from '../global/Affix';
 import Iframe from '../global/Iframe';
 import PreviewList from '../creative/PreviewList';
+import PreviewTitle from '../creative/PreviewTitle';
 import board from '../board.svg';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,27 +21,33 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   stage: {
-    height: "86vh",
+    minHeight: "77vh",
     background: `url(${board})`,
   },
-  base:{
-    borderBottom: "1px solid #d5d5d5",
+  base: {
+    borderBottom: "1px solid #e7e7e7",
     color: "#f50057",
-    background: "transparent"
+    background: "transparent",
   },
-  panel:{
-      padding: "1em 0"
+  panel: {
+    padding: "1em",
   },
-  icon:{
-      marginBottom: "0 !important",
-      marginRight: "0.5em"
+  icon: {
+    marginBottom: "0 !important",
+    marginRight: "0.5em",
   },
-  tabs:{
+  tabs: {
     marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
   },
+  toolbar: {
+    paddingRight: 0,
+  },
+  creativeName:{
+    width: "fit-content",
+  }
 }));
 
 export default function CreativeTab() {
@@ -55,24 +62,44 @@ export default function CreativeTab() {
     <div className={classes.root}>
       <TabContext value={value}>
         <div className={classes.root}>
-            <AppBar elevation={0} position="static" className={classes.base}>
-                <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        Creative Name
-                    </Typography>
-                    
-                    <TabList onChange={handleChange} aria-label="simple tabs example" className={classes.tabs}>
-                        <Tab icon={<VisibilityIcon className={classes.icon} />} label="Preview" value="1" />
-                        <Tab icon={<ArtTrackIcon className={classes.icon} />} label="Preview Sheet" value="2" />
-                    </TabList>
-                </Toolbar> 
-            </AppBar>
+          <AppBar elevation={0} position="static" className={classes.base}>
+            <Toolbar className={classes.toolbar}>
+              <Typography variant="h6" className={classes.title}>
+                <div className={classes.creativeName}>
+                  <PreviewTitle />
+                </div>
+              </Typography>
+
+              <TabList
+                onChange={handleChange}
+                aria-label="preview options"
+                className={classes.tabs}
+              >
+                <Tab
+                  size="small"
+                  icon={<VisibilityIcon className={classes.icon} />}
+                  label="Preview"
+                  value="1"
+                />
+                <Tab
+                  size="small"
+                  icon={<ArtTrackIcon className={classes.icon} />}
+                  label="Preview Sheet"
+                  value="2"
+                />
+              </TabList>
+            </Toolbar>
+          </AppBar>
         </div>
         <TabPanel value="1" className={classes.panel}>
-            <div className={classes.stage}><Iframe /></div>
-            <Affix />
+          <div className={classes.stage}>
+            <Iframe />
+          </div>
+          <Affix />
         </TabPanel>
-        <TabPanel value="2"><PreviewList /></TabPanel>
+        <TabPanel value="2">
+          <PreviewList />
+        </TabPanel>
       </TabContext>
     </div>
   );

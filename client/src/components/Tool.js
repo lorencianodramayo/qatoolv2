@@ -11,7 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import Slide from "@material-ui/core/Slide";
 
-import CreativeList from './CreativeList';
+import DynamicElement from "./DynamicElement";
 import CreativeTab from './CreativeTab';
 
 import logo from '../logo.svg';
@@ -67,8 +67,9 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginRight: -300,
+    marginRight: -350,
     minHeight: "100vh",
+    backgroundColor: "#ececec"
   },
   contentShift: {
     transition: theme.transitions.create("margin", {
@@ -85,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Tool(props) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(!open);
@@ -125,7 +126,7 @@ export default function Tool(props) {
         <div className={classes.drawerHeader} />
         <CreativeTab />
       </main>
-      <CreativeList open={open}/>
+      <DynamicElement open={open} />
     </div>
   );
 }
