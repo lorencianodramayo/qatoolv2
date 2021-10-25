@@ -20,10 +20,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     margin: "8px 0",
   },
-  label:{
-    textAlign: "center",
-    width: "9.2em"
-  }
 }));
 
 export default function SideInput() {
@@ -53,13 +49,14 @@ export default function SideInput() {
           variant="outlined"
           size="small"
         >
-          <InputLabel htmlFor="frame1Headline-text" className={classes.label}>frame1Headline</InputLabel>
+          <InputLabel htmlFor="frame1Headline-text">frame1Headline</InputLabel>
           <OutlinedInput
             id="frame1Headline-text"
             type="text"
             fullWidth={true}
             value={values.text}
             onChange={handleChange("text")}
+            label="frame1Headline"
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -72,7 +69,6 @@ export default function SideInput() {
                 </IconButton>
               </InputAdornment>
             }
-            labelWidth={150}
           />
         </FormControl>
       </div>
