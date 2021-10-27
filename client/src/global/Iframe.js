@@ -1,4 +1,5 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -27,8 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
   frame:{
     border: 0,
-    width: 300,
-    height: 600
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -39,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Iframe = () => {
   const classes = useStyles();
+  const { id } = useParams();
   const [open, setOpen] = React.useState(true);
   const handleClose = () => {
     setOpen(false);
@@ -51,7 +51,13 @@ const Iframe = () => {
           <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
             <CircularProgress color="inherit" />
           </Backdrop>
-          <iframe className={classes.frame} title="concept-qa" src="https://storage.googleapis.com/adlib-showcase-bucket/613641c2be8a7d61122e643c/300x600-Playstation/index.html" />
+          <iframe 
+            width={1080} 
+            height={1920} 
+            className={classes.frame} 
+            title="concept-qa" 
+            src={`https://storage.googleapis.com/adlib-showcase-bucket/${id}/1080x1920-Yahoo_Social/index.html`}
+          />
         </div>
       </Paper>
     </div>

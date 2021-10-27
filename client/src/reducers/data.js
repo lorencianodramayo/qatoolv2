@@ -12,17 +12,11 @@ const dataReducer = (state = {}, action) => {
           data: action.payload,
         }
 
-      case "DELETE_DATA_LIBRARY":
-        return {
-          data: state.data.filter(
-            (element) => element._id !== action.payload._id
-          ),
-        };
-
       case "DATA_ERROR":
         return {
           error: action.payload,
         };
+        
       default:
         return state;
     }
