@@ -5,14 +5,28 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Router } from "react-router";
 import { createBrowserHistory } from "history";
+import thunk from "redux-thunk";
+import { composeWithDevTools } from "redux-devtools-extension";
+import  { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from "redux";
+import rootReducer from './reducers';
+
+const middleware = [thunk];
+
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(...middleware))
+);
 const history = createBrowserHistory();
 
 ReactDOM.render(
-  <Router history={history}>
-    {/* <React.StrictMode> */}
-      <App />
-    {/* </React.StrictMode> */}
-  </Router>,
+  <Provider store={store}>
+    <Router history={history}>
+      {/* <React.StrictMode> */}
+        <App />
+      {/* </React.StrictMode> */}
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
 

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
 import {DropzoneArea} from 'material-ui-dropzone';
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
+
+import { saveZip } from "../actions";
 
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
@@ -22,28 +25,39 @@ const useStyles = makeStyles((theme) => ({
 
 const Dragger = () => {
   let history = useHistory();
+  const dispatch = useDispatch();
+  const state = useSelector((state) => state.data);
+
+  useEffect(()=>{
+    if(Object.keys(state).length > 0){
+      history.push(`/${state.data._id}`);
+    }
+  });
 
   const handleChange = (files) => {
-    console.log(files);
-    if(files.length > 0){history.push("/hello");}
+    dispatch(saveZip(files));
   }
 
   const classes = useStyles();
   return (
-      <DropzoneArea 
+    <div>
+      <DropzoneArea
         icon={<CloudUploadIcon />}
         dropzoneClass={classes.root}
         dropzoneParagraphClass={classes.paragraph}
-        acceptedFiles={['zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed']}
+        acceptedFiles={[
+          "zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed",
+        ]}
         showPreviews={false}
         showPreviewsInDropzone={false}
         useChipsForPreview
-        dropzoneText={'Drop multiple or single zip file.'}
+        dropzoneText={"Drop multiple or single zip file."}
         showAlerts={false}
         onChange={handleChange}
         maxFileSize={6291456}
       />
-  )
+    </div>
+  );
 }
 
 export default Dragger;
