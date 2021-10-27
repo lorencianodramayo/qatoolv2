@@ -21,6 +21,7 @@ export default function SideSelect(props) {
 
   const handleChange = (event) => {
     setAge(event.target.value);
+    console.log(age)
   };
 
   return (

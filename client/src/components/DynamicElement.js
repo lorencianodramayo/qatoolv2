@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import Drawer from "@material-ui/core/Drawer";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
