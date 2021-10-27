@@ -31,7 +31,7 @@ export default function PreviewTitle() {
 
   useEffect(()=>{
     dispatch(getCreative(id));
-  }, []);
+  }, [dispatch, id]);
 
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);

@@ -29,7 +29,7 @@ const Dragger = () => {
   const state = useSelector((state) => state.data);
 
   useEffect(()=>{
-    if(Object.keys(state).length > 0){
+    if('data' in state){
       history.push(`/${state.data._id}`);
     }
   });
