@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SideInput() {
+export default function SideInput(props) {
   const classes = useStyles();
   const [values, setValues] = React.useState({
     text: "",
@@ -49,25 +49,35 @@ export default function SideInput() {
           variant="outlined"
           size="small"
         >
-          <InputLabel htmlFor="frame1Headline-text">frame1Headline</InputLabel>
+          <InputLabel htmlFor={`${props.dynamicName}-text`}>
+            {props.dynamicName}
+          </InputLabel>
           <OutlinedInput
-            id="frame1Headline-text"
+            id={`${props.dynamicName}-text`}
             type="text"
             fullWidth={true}
-            value={values.text}
+            defaultValue={props.value}
             onChange={handleChange("text")}
-            label="frame1Headline"
+            label={props.dynamicName}
             endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.options ? <FontDownloadIcon /> : <FontDownloadOutlinedIcon />}
-                </IconButton>
-              </InputAdornment>
+              !["color", "landing", "readable", "css"].some((t) =>
+                props.dynamicName.toLowerCase().includes(t)
+              ) ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {values.options ? (
+                      <FontDownloadIcon />
+                    ) : (
+                      <FontDownloadOutlinedIcon />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ) : null
             }
           />
         </FormControl>

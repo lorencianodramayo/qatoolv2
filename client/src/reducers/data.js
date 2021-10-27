@@ -12,6 +12,12 @@ const dataReducer = (state = {}, action) => {
           data: action.payload,
         }
 
+      case "UPDATE_CREATIVE":
+        return{
+          ...state,
+          data: action.payload,
+        }
+
       case "DATA_ERROR":
         return {
           error: action.payload,

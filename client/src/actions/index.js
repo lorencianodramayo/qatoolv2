@@ -44,6 +44,62 @@ export const getCreative = (id) => async (dispatch) => {
       payload: res.data,
     });
   }catch(error) {
-    
+    dispatch({
+      type: "DATA_ERROR",
+      payload: error,
+    });
+  }
+}
+
+export const updateCreative = (id, dynamic) => async (dispatch) => {
+  try{
+    const res = await axios({
+      method: "PUT",
+      url: "/api/update_creative",
+      params: {
+        id,
+        dynamic,
+      },
+    });
+
+    dispatch({
+      type: "UPDATE_CREATIVE",
+      payload: res.data,
+    });
+  }catch(error) {
+    dispatch({
+      type: "DATA_ERROR",
+      payload: error,
+    });
+  }
+}
+
+//set iframe
+export const setFrame = (index) => (dispatch) => {
+  try{
+    dispatch({
+      type: "SET_FRAME",
+      payload: index,
+    });
+  }catch(error) {
+    dispatch({
+      type: "DATA_ERROR",
+      payload: error,
+    });
+  }
+}
+
+//increment
+export const increment = (count) => (dispatch) => {
+  try {
+    dispatch({
+      type: "INCREMENT",
+      payload: count,
+    });
+  } catch (error) {
+    dispatch({
+      type: "DATA_ERROR",
+      payload: error,
+    });
   }
 }

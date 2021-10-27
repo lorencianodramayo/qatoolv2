@@ -8,14 +8,14 @@ import Select from '@material-ui/core/Select';
 const useStyles = makeStyles((theme) => ({
   formControl: {
     width: "100%",
-    margin: "2px 0",
+    margin: "8px 0",
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
 }));
 
-export default function SideSelect() {
+export default function SideSelect(props) {
   const classes = useStyles();
   const [age, setAge] = React.useState('');
 
@@ -25,32 +25,35 @@ export default function SideSelect() {
 
   return (
     <div>
-      <FormControl variant="outlined" className={classes.formControl} size="small">
-        <InputLabel id="trigger-text">customVariable</InputLabel>
+      <FormControl
+        variant="outlined"
+        className={classes.formControl}
+        size="small"
+      >
+        <InputLabel id="trigger-text">{props.dynamicName}</InputLabel>
         <Select
           labelId="trigger-text"
           id="trigger-id"
-          value={age}
+          defaultValue={props.value}
           onChange={handleChange}
-          label="customVariable"
+          label={props.dynamicName}
           MenuProps={{
             anchorOrigin: {
               vertical: "bottom",
-              horizontal: "left"
+              horizontal: "left",
             },
             transformOrigin: {
               vertical: "top",
-              horizontal: "left"
+              horizontal: "left",
             },
-            getContentAnchorEl: null
+            getContentAnchorEl: null,
           }}
         >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={10}>Ten</MenuItem>
-          <MenuItem value={20}>Twenty</MenuItem>
-          <MenuItem value={30}>Thirty</MenuItem>
+          {
+            props.options.split(",").map((data, index) => {
+              return <MenuItem value={data} key={index}>{data}</MenuItem>;
+            })
+          }
         </Select>
       </FormControl>
     </div>

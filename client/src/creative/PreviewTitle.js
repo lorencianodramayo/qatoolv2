@@ -10,7 +10,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Fade from '@material-ui/core/Fade';
 
-import { getCreative } from "../actions";
+import { getCreative, setFrame } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +39,7 @@ export default function PreviewTitle() {
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
+    dispatch(setFrame(index));
     setAnchorEl(null);
   };
 

@@ -14,13 +14,12 @@ router.get("/", (req, res) => {
 });
 
 router.post("/save_zip", multer.any(), (req, res) => {
-  let arrCount = 0;
+  let arrCount = 0, 
+      arrCreatives = [];
+
   if(req.files.length > 0){
     new CreativeModel({
       bucketName: process.env.GCS_BUCKET,
-      creatives: req.files.map((file) => ({
-        name: file.originalname.split(".zip")[0],
-      })),
     }).save((error, result) => {
       //loop multiple files
       for (const file of req.files) {
@@ -31,24 +30,38 @@ router.post("/save_zip", multer.any(), (req, res) => {
         zip.getEntries().map((entry) => {
           //find index and inject codes
           if (entry.name.toLowerCase() === "index.html") {
-            let index = entry
-                          .getData()
-                          .toString("utf8")
-                          .split("</body>")
-                          .join(`
+            let index = entry.getData().toString("utf8").split("</html>").join(`
                             <script>
+                              var possibleValues;
+                              window.addEventListener('load', (event) => {
+                                parent.postMessage({
+                                  type: 'SAVE_DYNAMIC',
+                                  dynamic: {
+                                    defaultValues: defaultValues,
+                                    possibleValues: possibleValues
+                                  }
+                                }, '*');
+                              });
+                              
                               window.addEventListener('DOMContentLoaded', function() {
-                                window.addEventListener("message",
-                                  (event) => {
-                                    if(typeof event.data === "object"){
+                                window.addEventListener("message", (event) => {
+                                    //console.log(event);
+                                    switch(event.data.type){
+                                      case 'GET_DYNAMIC':
+                                        console.log(event)
+                                      break;
+                                    }
+
+                                    /*if(typeof event.data === "object"){
                                         defaultValues= event.data;
                                     }else{
                                       if(event.data === "pause"){
                                         gwd.auto_PauseBtnClick();
                                       }else{
                                         gwd.auto_PlayBtnClick();
-                                    }
-                                  }
+                                      }
+                                    }*/
+
                                 }, false);
                               }, true);
                             </script>
@@ -62,16 +75,29 @@ router.post("/save_zip", multer.any(), (req, res) => {
             fileStream.on("finish", () => {
                 count++;
                 zip.getEntries().length === count? arrCount++ : null;
-
+                //push to array
+                arrCreatives.indexOf(entry.entryName) === -1 &&
+                entry.isDirectory
+                  ? arrCreatives.push({
+                      index: arrCreatives.length,
+                      name: entry.entryName.replace(/\\|\//g, ""),
+                    })
+                  : null;
+                //check if all are uploaded to bucket
                 if(arrCount === req.files.length){
-                  //return
-                  if (error) {
-                    return res
-                      .status(500)
-                      .json({ msg: "Sorry, internal server errors" });
-                  }
-
-                  return res.status(200).json(result);
+                  CreativeModel.findByIdAndUpdate(
+                    { _id: result._id },
+                    { $set: { creatives: arrCreatives } },
+                    { new: true },(err, cra) => {
+                      if (err) {
+                        return res
+                          .status(500)
+                          .json({ msg: "Sorry, internal server errors" });
+                      }
+                      console.log(cra);
+                      return res.status(200).json(cra);
+                    }
+                  );
                 }
               }
             );
@@ -92,5 +118,27 @@ router.get("/get_creative", (req, res ) => {
     return res.status(200).json(result);
   });
 });
+
+router.put("/update_creative", (req, res) => { 
+  let obj = [];
+  req.query.dynamic.map((data) => {
+    return obj.push(JSON.parse(data));
+  });
+
+  CreativeModel.findByIdAndUpdate(
+    req.query.id,
+    {
+      creatives: obj,
+    },
+    { new: true },
+    (error, result) => {
+      if (error) {
+        return res.status(500).json({ msg: "Sorry, internal server errors" });
+      }
+
+      return res.status(200).json(result);
+    }
+  );
+})
 
 module.exports = router;
