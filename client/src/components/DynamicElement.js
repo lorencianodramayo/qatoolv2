@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 import Drawer from "@material-ui/core/Drawer";
@@ -7,6 +7,8 @@ import FormLabel from "@material-ui/core/FormLabel";
 
 import SideInput from '../creative/SideInput';
 import SideSelect from '../creative/SideSelect';
+
+import libi from "../libi.svg";
 
 const drawerWidth = 350;
 
@@ -31,12 +33,23 @@ const useStyles = makeStyles((theme) => ({
     margin: "2em 1em",
     padding: "1em 0",
   },
+  loader: {
+    height: "100vh",
+    margin: "1em 0",
+    display: "flex",
+    justifyContent: "center",
+    background: "#2f2f2fd1"
+  }
 }));
 
 const DynamicElement = (props) => {
   const classes = useStyles();
-  const state = useSelector((state) => state.data);
   const frame = useSelector((state) => state.frame);
+  const [state,setState] = useState({})
+
+  useEffect(() => {
+    setState(frame);
+  }, [frame]);
   
     return (
       <Drawer
@@ -49,52 +62,43 @@ const DynamicElement = (props) => {
         }}
       >
         <div className={classes.drawerHeader} />
-
         {Object.keys(state).length > 0 ? (
-          "dynamic" in state.data.creatives[frame] ? (
+          "dynamic" in state.data ? (
             <FormControl component="fieldset" className={classes.list}>
-              {console.log(state.data.creatives[frame])}
               <FormLabel component="legend">Dynamic Elements</FormLabel>
-              {Object.keys(
-                state.data.creatives[frame].dynamic.defaultValues
-              ).map((data, index) => {
-
-                return state.data.creatives[frame].dynamic.possibleValues !==
-                  undefined ? (
-                  data in state.data.creatives[frame].dynamic.possibleValues ? (
-                    <SideSelect
-                      key={index}
-                      dynamicName={data}
-                      value={
-                        state.data.creatives[frame].dynamic.defaultValues[data]
-                      }
-                      options={
-                        state.data.creatives[frame].dynamic.possibleValues[data]
-                      }
-                    />
+              {Object.keys(state.data.dynamic.defaultValues).map(
+                (res, index) => {
+                  return state.data.dynamic.possibleValues !== undefined ? (
+                    res in state.data.dynamic.possibleValues ? (
+                      <SideSelect
+                        key={index}
+                        dynamicName={res}
+                        value={state.data.dynamic.defaultValues[res]}
+                        options={state.data.dynamic.possibleValues[res]}
+                      />
+                    ) : (
+                      <SideInput
+                        key={index}
+                        dynamicName={res}
+                        value={state.data.dynamic.defaultValues[res]}
+                      />
+                    )
                   ) : (
                     <SideInput
                       key={index}
-                      dynamicName={data}
-                      value={
-                        state.data.creatives[frame].dynamic.defaultValues[data]
-                      }
+                      dynamicName={res}
+                      value={state.data.dynamic.defaultValues[res]}
                     />
-                  )
-                ) : (
-                  <SideInput
-                    key={index}
-                    dynamicName={data}
-                    value={
-                      state.data.creatives[frame].dynamic.defaultValues[data]
-                    }
-                  />
-                );
-              })}
-              
+                  );
+                }
+              )}
             </FormControl>
           ) : null
-        ) : null}
+        ) : (
+          <div className={classes.loader}>
+            <img src={libi} alt="libi-logo" style={{ width: "100px" }} />
+          </div>
+        )}
       </Drawer>
     );
 }

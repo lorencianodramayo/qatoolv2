@@ -75,11 +75,11 @@ export const updateCreative = (id, dynamic) => async (dispatch) => {
 }
 
 //set iframe
-export const setFrame = (index) => (dispatch) => {
+export const setFrame = (obj) => (dispatch) => {
   try{
     dispatch({
       type: "SET_FRAME",
-      payload: index,
+      payload: obj,
     });
   }catch(error) {
     dispatch({

@@ -54,7 +54,8 @@ const Dragger = () => {
         dropzoneText={"Drop multiple or single zip file."}
         showAlerts={false}
         onChange={handleChange}
-        maxFileSize={6291456}
+        maxFileSize={100000000}
+        filesLimit={100}
       />
     </div>
   );

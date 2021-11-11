@@ -1,10 +1,14 @@
-const iframeReducer = (state = 0, action) => {
+const iframeReducer = (state = {}, action) => {
     switch (action.type) {
       case "SET_FRAME":
-        return action.payload;
+        return {
+          data: action.payload,
+        };
       
       case "GET_FRAME":
-        return action.payload;
+        return {
+          data: action.payload,
+        };
 
       case "DATA_ERROR":
         return {

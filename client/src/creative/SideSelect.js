@@ -31,10 +31,12 @@ export default function SideSelect(props) {
         className={classes.formControl}
         size="small"
       >
-        <InputLabel id="trigger-text">{props.dynamicName}</InputLabel>
+        <InputLabel id={`${props.dynamicName}-text`}>
+          {props.dynamicName}
+        </InputLabel>
         <Select
-          labelId="trigger-text"
-          id="trigger-id"
+          labelId={`${props.dynamicName}-text`}
+          id={`${props.dynamicName}-id`}
           defaultValue={props.value}
           onChange={handleChange}
           label={props.dynamicName}
@@ -50,11 +52,13 @@ export default function SideSelect(props) {
             getContentAnchorEl: null,
           }}
         >
-          {
-            props.options.split(",").map((data, index) => {
-              return <MenuItem value={data} key={index}>{data}</MenuItem>;
-            })
-          }
+          {props.options.split(",").map((data, index) => {
+            return (
+              <MenuItem value={data} key={index}>
+                {data}
+              </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
     </div>

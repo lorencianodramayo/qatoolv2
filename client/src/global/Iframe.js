@@ -6,13 +6,13 @@ import Paper from '@material-ui/core/Paper';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { updateCreative, increment } from "../actions";
+import { setFrame, increment } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    '& > *': {
+    display: "flex",
+    flexWrap: "wrap",
+    "& > *": {
       margin: theme.spacing(1),
       width: theme.spacing(16),
       height: theme.spacing(16),
@@ -20,22 +20,22 @@ const useStyles = makeStyles((theme) => ({
   },
   parent: {
     position: "relative",
-    display: "flex"
+    display: "flex",
   },
-  paper:{
+  paper: {
     width: "auto",
     height: "auto",
     margin: "8px",
     padding: "1em",
-    border: "1px solid #cdcdcd"
+    border: "1px solid #cdcdcd",
   },
-  frame:{
+  frames: {
     border: 0,
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#f50057',
-    position: "absolute"
+    color: "#f50057",
+    position: "absolute",
   },
 }));
 
@@ -43,50 +43,72 @@ const Iframe = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const state = useSelector((state) => state.data);
   const frame = useSelector((state) => state.frame);
-  const count = useSelector((state) => state.counter)
+  const count = useSelector((state) => state.counter);
   const [open, setOpen] =useState(true);
   const [done, setDone] = useState(false);
 
   const handleLoad = (e) =>{
     setOpen(true);
-    if ("dynamic" in state.data.creatives[frame]) {
-      window.addEventListener(
-        "message",
-        (event) => {
-          switch (event.data.type) {
-            case "SCREENSHOT_START":
-              setOpen(false);
-              break;
-            default: return event.data.type;
-          }
-        },
-        false
-      );
-    } else {
-      setDone(false)
-      window.addEventListener("message", (event) => {
-        switch (event.data.type) {
-          case "SAVE_DYNAMIC":
-            state.data.creatives[frame].dynamic = event.data.dynamic;
-            dispatch(updateCreative(id, state.data.creatives)).then(() => {
-              if(!done){
-                dispatch(increment(count + 1));
-                setDone(true);
-              }
-            });
-            break;
-          default: return event.data.type;
-        }
-      });
-      // e.target.contentWindow.postMessage(
-      //   { type: "GET_DYNAMIC" },
-      //   `https://storage.googleapis.com/adlib-showcase-bucket/${id}/${decodeURIComponent(
-      //     state.data.creatives[frame].name
-      //   )}/index.html`
-      // );
+    frame.data.dynamic = {};
+    // if (Object.keys(frame.data).indexOf('dynamic') > -1) {
+    //   window.addEventListener(
+    //     "message",
+    //     (event) => {
+    //       switch (event.data.type) {
+    //         case "SCREENSHOT_START":
+    //           setOpen(false);
+    //           setDone(true);
+    //           break;
+    //         default: return event.data.type;
+    //       }
+    //     },
+    //     false
+    //   );
+    // } else {
+    //   setDone(false);
+    //   window.addEventListener("message", (event) => {
+    //     switch (event.data.type) {
+    //       case "SAVE_DYNAMIC":
+    //           console.log("updating")
+    //           frame.data.dynamic = event.data.dynamic;
+    //           // dispatch(updateCreative(id, frame)).then(()=> {
+                
+    //           // });
+    //           if (!done) {
+    //             //dispatch(setFrame(frame.data))
+    //             dispatch(increment(count + 1));
+    //             setDone(true);
+    //           }
+    //         break;
+    //       default:
+    //         return event.data.type;
+    //     }
+    //   });
+    // }
+
+    // e.target.contentWindow.postMessage(
+    //   { type: "GET_DYNAMIC" },
+    //   `https://storage.googleapis.com/adlib-showcase-bucket/${id}/${decodeURIComponent(
+    //     state.data.creatives[frame].name
+    //   )}/index.html`
+    // );
+  window.addEventListener("message", (event) => {
+    switch (event.data.type) {
+      case "SAVE_DYNAMIC":
+        console.log("updating");
+         frame.data.dynamic = event.data.dynamic;
+        // dispatch(setFrame({ ...frame.data }));
+
+        // if (Object.keys(frame.data).indexOf("dynamic") > -1) {
+        //   dispatch(increment(count + 1));
+        //   setDone(true);
+        // }
+        break;
+      default:
+        return event.data.type;
     }
+  });
   }
 
   const handleClose = () => {
@@ -95,9 +117,10 @@ const Iframe = () => {
   
   return (
     <div className={classes.root}>
-      {Object.keys(state).length > 0 ? (
+      {Object.keys(frame).length > 0 ? (
         <Paper elevation={5} className={classes.paper}>
           <div className={classes.parent}>
+            {console.log(frame)}
             <Backdrop
               className={classes.backdrop}
               open={open}
@@ -105,21 +128,16 @@ const Iframe = () => {
             >
               <CircularProgress color="inherit" />
             </Backdrop>
-
             <iframe
-              key={count}
-              onLoad={handleLoad}
-              width={
-                state.data.creatives[frame].name.split("-")[0].split("x")[0]
-              }
-              height={
-                state.data.creatives[frame].name.split("-")[0].split("x")[1]
-              }
-              className={classes.frame}
+              key={0}
+              width={frame.data.name.split("-")[0].split("x")[0]}
+              height={frame.data.name.split("-")[0].split("x")[1]}
+              className={classes.frames}
               title="concept-qa"
               src={`https://storage.googleapis.com/adlib-showcase-bucket/${id}/${decodeURIComponent(
-                state.data.creatives[frame].name
+                frame.data.name
               )}/index.html`}
+              onLoad={handleLoad}
             />
           </div>
         </Paper>

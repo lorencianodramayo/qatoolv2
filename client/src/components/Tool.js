@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { useParams } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { getCreative } from "../actions";
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -15,6 +18,7 @@ import DynamicElement from "./DynamicElement";
 import CreativeTab from './CreativeTab';
 
 import logo from '../logo.svg';
+
 
 function HideOnScroll(props) {
   const { children, window } = props;
@@ -85,8 +89,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Tool(props) {
+  const { id } = useParams();
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
+
+  useEffect(() => {
+    dispatch(getCreative(id));
+  }, [dispatch, id]);
 
   const handleDrawerOpen = () => {
     setOpen(!open);
@@ -126,7 +136,7 @@ export default function Tool(props) {
         <div className={classes.drawerHeader} />
         <CreativeTab />
       </main>
-      <DynamicElement open={open} />
+      {/* <DynamicElement open={open} /> */}
     </div>
   );
 }

@@ -1,6 +1,5 @@
 
-import React, { useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import List from "@material-ui/core/List";
@@ -10,7 +9,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import Fade from '@material-ui/core/Fade';
 
-import { getCreative, setFrame } from "../actions";
+import { setFrame, increment } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,14 +23,19 @@ const useStyles = makeStyles((theme) => ({
 export default function PreviewTitle() {
   const dispatch = useDispatch();
   const state = useSelector((state) => state.data);
+  const count = useSelector((state) => state.counter);
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
-  const { id } = useParams();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [title, setTitle] = useState(null);
 
-  useEffect(()=>{
-    dispatch(getCreative(id));
-  }, [dispatch, id]);
+  useEffect(() => {
+    if (Object.keys(state).length > 0) {
+      setTitle(state);
+      //console.log(state.data.creatives)
+      dispatch(setFrame(state.data.creatives[selectedIndex]));
+    }
+  }, [dispatch, selectedIndex, state]);
 
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,7 +43,8 @@ export default function PreviewTitle() {
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
-    dispatch(setFrame(index));
+    dispatch(setFrame(state.data.creatives[index]));
+    dispatch(increment(count + 1));
     setAnchorEl(null);
   };
 
@@ -49,56 +54,53 @@ export default function PreviewTitle() {
 
   return (
     <div className={classes.root}>
-      <List component="nav" aria-label="Creative Name">
-        <ListItem
-          button
-          aria-haspopup="true"
-          aria-controls="creative-menu"
-          aria-label="creative list"
-          onClick={handleClickListItem}
-          className={classes.listItem}
-        >
-          <ListItemText
-            primary={
-              Object.keys(state).length > 0
-                ? state.data.creatives[selectedIndex].name
-                : null
+      {title != null ? (
+        <div>
+          <List component="nav" aria-label="Creative Name">
+            <ListItem
+              button
+              aria-haspopup="true"
+              aria-controls="creative-menu"
+              aria-label="creative list"
+              onClick={handleClickListItem}
+              className={classes.listItem}
+            >
+              <ListItemText
+                primary={title.data.creatives[selectedIndex].name}
+              />
+            </ListItem>
+          </List>
+          <Menu
+            id="creative-menu"
+            anchorEl={anchorEl}
+            getContentAnchorEl={null}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            transformOrigin={{ vertical: "top", horizontal: "center" }}
+            keepMounted
+            open={
+                Object.keys(title.data.creatives).length === 1
+                  ? false
+                  : Boolean(anchorEl)
             }
-          />
-        </ListItem>
-      </List>
-      <Menu
-        id="creative-menu"
-        anchorEl={anchorEl}
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        transformOrigin={{ vertical: "top", horizontal: "center" }}
-        keepMounted
-        open={
-          Object.keys(state).length > 0
-            ? Object.keys(state.data.creatives).length === 1
-              ? false
-              : Boolean(anchorEl)
-            : false
-        }
-        onClose={handleClose}
-        TransitionComponent={Fade}
-      >
-        {(Object.keys(state).length > 0
-          ? Object.keys(state.data.creatives).map((file) => [
-              ...state.data.creatives[file].name,
-            ])
-          : []
-        ).map((option, index) => (
-          <MenuItem
-            key={option}
-            selected={index === selectedIndex}
-            onClick={(event) => handleMenuItemClick(event, index)}
+            onClose={handleClose}
+            TransitionComponent={Fade}
           >
-            {option}
-          </MenuItem>
-        ))}
-      </Menu>
+            {(Object.keys(title.data.creatives).map((file) => 
+              [
+                ...title.data.creatives[file].name,
+              ])
+            ).map((option, index) => (
+              <MenuItem
+                key={option}
+                selected={index === selectedIndex}
+                onClick={(event) => handleMenuItemClick(event, index)}
+              >
+                {option}
+              </MenuItem>
+            ))}
+          </Menu>
+        </div>
+      ) : null}
     </div>
   );
 }

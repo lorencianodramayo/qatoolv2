@@ -13,7 +13,14 @@ router.get("/", (req, res) => {
   return res.status(200).json(arr);
 });
 
-router.post("/save_zip", multer.any(), (req, res) => {
+function extendTimeout(req, res, next) {
+  res.setTimeout(480000, function (){
+    console.log("timeout");
+  })
+  next();
+}
+
+router.post("/save_zip", extendTimeout, multer.any(), (req, res, next) => {
   let arrCount = 0, 
       arrCreatives = [];
 
@@ -69,8 +76,12 @@ router.post("/save_zip", multer.any(), (req, res) => {
             entry.setData(Buffer.from(index, "utf8"));
           }
           //create fileStream
-          const gFile = bucket.file(`${result.id}/${entry.entryName}`),
-            fileStream = gFile.createWriteStream();
+          const gFile = bucket.file(`${result._id}/${entry.entryName}`),
+            fileStream = gFile.createWriteStream({
+              resumable: false,
+              validation: false,
+              forever: false,
+            });
             fileStream.on("error", (err) => console.log(err));
             fileStream.on("finish", () => {
                 count++;
@@ -120,17 +131,16 @@ router.get("/get_creative", (req, res ) => {
 });
 
 router.put("/update_creative", (req, res) => { 
-  let obj = [];
-  req.query.dynamic.map((data) => {
-    return obj.push(JSON.parse(data));
-  });
+  let obj = JSON.parse(`${req.query.dynamic}`);
 
-  CreativeModel.findByIdAndUpdate(
-    req.query.id,
+  CreativeModel.findOneAndUpdate(
     {
-      creatives: obj,
+      _id: req.query.id,
     },
-    { new: true },
+    {
+      $set: { "creatives.$[element].dynamic": obj.data.dynamic },
+    },
+    { multi:true, arrayFilters: [{ "element.index" : obj.data.index }], new:true },
     (error, result) => {
       if (error) {
         return res.status(500).json({ msg: "Sorry, internal server errors" });
