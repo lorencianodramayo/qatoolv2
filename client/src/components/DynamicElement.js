@@ -44,12 +44,12 @@ const useStyles = makeStyles((theme) => ({
 
 const DynamicElement = (props) => {
   const classes = useStyles();
-  const frame = useSelector((state) => state.frame);
+  const dynamic = useSelector((state) => state.dynamic);
   const [state,setState] = useState({})
 
   useEffect(() => {
-    setState(frame);
-  }, [frame]);
+    setState(dynamic);
+  }, [dynamic]);
   
     return (
       <Drawer
@@ -63,31 +63,31 @@ const DynamicElement = (props) => {
       >
         <div className={classes.drawerHeader} />
         {Object.keys(state).length > 0 ? (
-          "dynamic" in state.data ? (
+          "data" in state ? (
             <FormControl component="fieldset" className={classes.list}>
               <FormLabel component="legend">Dynamic Elements</FormLabel>
-              {Object.keys(state.data.dynamic.defaultValues).map(
+              {Object.keys(state.data.defaultValues).map(
                 (res, index) => {
-                  return state.data.dynamic.possibleValues !== undefined ? (
-                    res in state.data.dynamic.possibleValues ? (
+                  return state.data.possibleValues !== undefined ? (
+                    res in state.data.possibleValues ? (
                       <SideSelect
                         key={index}
                         dynamicName={res}
-                        value={state.data.dynamic.defaultValues[res]}
-                        options={state.data.dynamic.possibleValues[res]}
+                        value={state.data.defaultValues[res]}
+                        options={state.data.possibleValues[res]}
                       />
                     ) : (
                       <SideInput
                         key={index}
                         dynamicName={res}
-                        value={state.data.dynamic.defaultValues[res]}
+                        value={state.data.defaultValues[res]}
                       />
                     )
                   ) : (
                     <SideInput
                       key={index}
                       dynamicName={res}
-                      value={state.data.dynamic.defaultValues[res]}
+                      value={state.data.defaultValues[res]}
                     />
                   );
                 }

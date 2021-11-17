@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
-import { setFrame, increment } from "../actions";
+import { setFrame, setDynamic, increment } from "../actions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,12 +45,13 @@ const Iframe = () => {
   const { id } = useParams();
   const frame = useSelector((state) => state.frame);
   const count = useSelector((state) => state.counter);
-  const [open, setOpen] =useState(true);
+  const [open, setOpen] = useState(true);
   const [done, setDone] = useState(false);
+  const [frameKey, setFrameKey] = useState(0)
 
-  const handleLoad = (e) =>{
+  const handleLoad = (e) => {
+    e.preventDefault();
     setOpen(true);
-    frame.data.dynamic = {};
     // if (Object.keys(frame.data).indexOf('dynamic') > -1) {
     //   window.addEventListener(
     //     "message",
@@ -73,7 +74,7 @@ const Iframe = () => {
     //           console.log("updating")
     //           frame.data.dynamic = event.data.dynamic;
     //           // dispatch(updateCreative(id, frame)).then(()=> {
-                
+
     //           // });
     //           if (!done) {
     //             //dispatch(setFrame(frame.data))
@@ -93,34 +94,35 @@ const Iframe = () => {
     //     state.data.creatives[frame].name
     //   )}/index.html`
     // );
-  window.addEventListener("message", (event) => {
-    switch (event.data.type) {
-      case "SAVE_DYNAMIC":
-        console.log("updating");
-         frame.data.dynamic = event.data.dynamic;
-        // dispatch(setFrame({ ...frame.data }));
-
-        // if (Object.keys(frame.data).indexOf("dynamic") > -1) {
-        //   dispatch(increment(count + 1));
-        //   setDone(true);
-        // }
-        break;
-      default:
-        return event.data.type;
+    setFrameKey(count);
+    if(frameKey === count){
+      window.addEventListener("message", (event) => {
+        switch (event.data.type) {
+          case "SAVE_DYNAMIC":
+            dispatch(setDynamic({ ...event.data.dynamic }));
+            //dispatch(setFrame({frame}, ...event.data.dynamic ));
+            // if (Object.keys(frame.data).indexOf("dynamic") > -1) {
+            //   dispatch(increment(count + 1));
+            //   setDone(true);
+            // }
+            break;
+          default:
+            return "hello";
+        }
+      });
     }
-  });
-  }
+    
+  };
 
   const handleClose = () => {
     setOpen(false);
   };
-  
+
   return (
     <div className={classes.root}>
       {Object.keys(frame).length > 0 ? (
         <Paper elevation={5} className={classes.paper}>
           <div className={classes.parent}>
-            {console.log(frame)}
             <Backdrop
               className={classes.backdrop}
               open={open}
@@ -129,7 +131,7 @@ const Iframe = () => {
               <CircularProgress color="inherit" />
             </Backdrop>
             <iframe
-              key={0}
+              key={count}
               width={frame.data.name.split("-")[0].split("x")[0]}
               height={frame.data.name.split("-")[0].split("x")[1]}
               className={classes.frames}
@@ -144,6 +146,6 @@ const Iframe = () => {
       ) : null}
     </div>
   );
-}
+};
 
 export default Iframe;

@@ -89,6 +89,21 @@ export const setFrame = (obj) => (dispatch) => {
   }
 }
 
+//export dynamic 
+export const setDynamic = (obj) => (dispatch) => {
+  try {
+    dispatch({
+      type: "SET_DYNAMIC",
+      payload: obj,
+    });
+  }catch(error) {
+    dispatch({
+      type: "DATA_ERROR",
+      payload: error,
+    })
+  }
+}
+
 //increment
 export const increment = (count) => (dispatch) => {
   try {

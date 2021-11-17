@@ -136,7 +136,7 @@ export default function Tool(props) {
         <div className={classes.drawerHeader} />
         <CreativeTab />
       </main>
-      {/* <DynamicElement open={open} /> */}
+      <DynamicElement open={open} />
     </div>
   );
 }

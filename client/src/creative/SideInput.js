@@ -56,7 +56,7 @@ export default function SideInput(props) {
             id={`${props.dynamicName}-text`}
             type="text"
             fullWidth={true}
-            defaultValue={props.value}
+            value={props.value}
             onChange={handleChange("text")}
             label={props.dynamicName}
             endAdornment={
